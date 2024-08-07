@@ -2,8 +2,6 @@ name: Create update develop pull request
 on:
   push:
     branches: ['release/jm/**']
-permissions:
-  contents: write
 jobs:
   updateDevelop:
     runs-on: ubuntu-latest
