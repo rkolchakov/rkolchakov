@@ -16,8 +16,8 @@ jobs:
         id: extract_branch
       - name: Reset branch
         run: |
-          git fetch origin steps.extract_branch.outputs.branch:steps.extract_branch.outputs.branch
-          git reset --hard steps.extract_branch.outputs.branch
+          git fetch origin ${{ steps.extract_branch.outputs.branch }}:${{ steps.extract_branch.outputs.branch }}
+          git reset --hard ${{ steps.extract_branch.outputs.branch }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
