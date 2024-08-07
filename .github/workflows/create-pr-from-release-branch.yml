@@ -1,7 +1,7 @@
 name: Create update develop pull request
 on:
   push:
-    branches: ['feature/**']
+    branches: ['**']
 permissions:
   contents: write
 jobs:
