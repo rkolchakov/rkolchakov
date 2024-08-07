@@ -22,7 +22,7 @@ jobs:
         with:
           branch: feature/jm/pr-from-test-branch
       - name: Enable Pull Request Automerge
-        if: steps.cpr.outputs.pull-request-operation == 'created'
+        if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.PAT }}
