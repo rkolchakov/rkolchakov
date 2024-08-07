@@ -1,14 +1,12 @@
 name: Create update develop pull request
 on:
   push:
-    branches: ['**']
-permissions:
-  contents: write
+    branches: ['release/jm/**']
 jobs:
   updateDevelop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: main
       - name: Extract branch name
@@ -23,3 +21,10 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: feature/jm/pr-from-test-branch
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
