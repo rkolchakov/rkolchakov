@@ -14,5 +14,9 @@ Here are some ideas to get you started:
 - 📫 How to reach me: ...
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
+<<<<<<< HEAD
 //
+=======
+////
+>>>>>>> c7899150358f504249923b52bd092811b6f9eb84
 -->
