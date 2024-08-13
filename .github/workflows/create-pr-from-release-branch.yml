@@ -1,25 +1,32 @@
 name: Create update develop pull request
 on:
   push:
-    branches: ['**']
-permissions:
-  contents: write
+    branches: ['release/jm/**']
 jobs:
   updateDevelop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: main
       - name: Extract branch name
+        id: extract_branch
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
       - name: Reset branch
         run: |
           git fetch origin ${{ steps.extract_branch.outputs.branch }}:${{ steps.extract_branch.outputs.branch }}
           git reset --hard ${{ steps.extract_branch.outputs.branch }}
       - name: Create Pull Request
+        id: create_pr
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: feature/jm/pr-from-test-branch
+          branch: feature/jm/temp-auto-pr-from-release
+      - name: Enable Pull Request Automerge
+        if: steps.create_pr.outputs.pull-request-operation == 'created' || steps.create_pr.outputs.pull-request-operation == 'updated'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          merge-method: squash
