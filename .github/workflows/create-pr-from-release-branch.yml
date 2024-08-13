@@ -22,8 +22,6 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: feature/jm/temp-auto-pr
-          assignees: rkolchakov
-          reviewers: rkolchakov
       - name: Enable Pull Request Automerge
         id: merge_pr
         if: steps.create_pr.outputs.pull-request-operation == 'created' || steps.create_pr.outputs.pull-request-operation == 'updated'
@@ -34,3 +32,8 @@ jobs:
           pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
           merge-method: squash
         continue-on-error: true
+      - name: Set reviewer if needed
+        if: steps.merge_pr.outcome != 'success'
+        run: gh pr edit ${{ steps.create_pr.outputs.pull-request-number }} --add-reviewer rkolchakov --remove-assignee rkolchakov
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
