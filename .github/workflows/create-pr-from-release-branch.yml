@@ -22,6 +22,11 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: feature/jm/temp-auto-pr-from-release
+      - name: Auto approve
+        if: steps.create_pr.outputs.pull-request-operation == 'created'
+        run: gh pr review --approve "${{ steps.create_pr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Enable Pull Request Automerge
         if: steps.create_pr.outputs.pull-request-operation == 'created' || steps.create_pr.outputs.pull-request-operation == 'updated'
         uses: peter-evans/enable-pull-request-automerge@v3
