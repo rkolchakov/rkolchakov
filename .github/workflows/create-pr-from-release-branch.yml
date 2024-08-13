@@ -25,6 +25,8 @@ jobs:
       - name: Enable Pull Request Automerge
         if: steps.create_pr.outputs.pull-request-operation == 'created' || steps.create_pr.outputs.pull-request-operation == 'updated'
         uses: peter-evans/enable-pull-request-automerge@v3
+        env:
+          GH_TOKEN: ${{ github.token }}
         with:
           token: ${{ secrets.PAT }}
           pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
