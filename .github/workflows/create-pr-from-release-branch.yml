@@ -34,6 +34,6 @@ jobs:
         continue-on-error: true
       - name: Set reviewer if needed
         if: steps.merge_pr.outcome != 'success'
-        run: gh pr edit ${{ steps.create_pr.outputs.pull-request-number }} --add-reviewer rkolchakov --remove-assignee rkolchakov
+        run: gh pr edit ${{ steps.create_pr.outputs.pull-request-number }} --add-reviewer rkolchakov --add-assignee rkolchakov
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
